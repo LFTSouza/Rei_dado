@@ -17,6 +17,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,11 +55,17 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun Body( modifier: Modifier = Modifier) {
+fun Body(modifier: Modifier = Modifier) {
+
+    var sorteio by remember {
+        mutableIntStateOf(7);
+    }
+    val img = onCLick(sorteio);
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-    ){
+    ) {
         Text(
             text = "Hora de rolar os dados!",
             fontSize = 30.sp,
@@ -63,25 +74,35 @@ fun Body( modifier: Modifier = Modifier) {
             letterSpacing = 0.1.em,
             color = Color.White,
             modifier = modifier.padding(bottom = 20.dp)
-            )
+        )
 
         Image(
-            painter = painterResource(R.drawable.king_dice),
+            painter = painterResource(img),
             contentDescription = "King Dice"
         )
 
         Button(
-            onClick = {onclick()},
+            onClick = { sorteio = (1..6).random() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = ButtonColor
             )
-            ){
-        Text("Jogar dados")
+        ) {
+            Text("Jogar dados")
         }
     }
 }
 
-private fun onclick(){
+private fun onCLick(sorteio: Int): Int {
+    val imagem_sorteada = when (sorteio) {
+        1 -> R.drawable.dice_1;
+        2 -> R.drawable.dice_2;
+        3 -> R.drawable.dice_3;
+        4 -> R.drawable.dice_4;
+        5 -> R.drawable.dice_5;
+        6 -> R.drawable.dice_6;
+        else -> R.drawable.king_dice
+    };
+    return imagem_sorteada;
 }
 
 @Preview(showBackground = true)
